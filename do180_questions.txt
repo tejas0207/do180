@@ -1,0 +1,98 @@
+cd DO180 Questions
+All the passwords for all the users are: Boaterch9
+Openshift user : openndev and password is Boaterch9
+O1: build the docker image named: acme/jboss-eap
+Extends the image jboss-eap-7.2.0:latest
+Set the JBOSS_HOME to /opt/jboss/jboss-eap-7.2
+Copy the content from /home/desktop/jboss-eap-7.2.zip to /opt/jboss
+Run the script to create user $JBOSS_HOME/bin/add-user.sh admin123 –silent
+Expose the port 8080 9990 9999
+Run the cmd: jboss manage ………
+FROM jboss-eap-7.2.0:latest
+ENV JBOSS_HOME=/opt/jboss/jboss-eap-7.2
+RUN mkdir /opt/jboss
+(then I have copied the jboss-eap-7.2.0.zip from /home/desktop to the current Dockerfile 
+directory as COPY can only copy form current Directory)
+COPY jboss-eap-7.2.0.zip /opt/jboss/
+RUN unzip /opt/jboss/jboss-eap-7.2.0.zip
+RUN $JBOSS_HOME/bin/add-user.sh admin123 –silent → command given in question
+EXPOSE 8080,9990,9999
+CMD [“ /opt/jboss/wildfly-23.0.1.Final/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0“] 
+Wildfly Link: https://download.jboss.org/wildfly/23.0.2.Final/wildfly-23.0.2.Final.zip
+
+
+Q2 complete the flowing scripts:
+Stopcontainer.sh -> write the command to stop and remove the container with name acme
+Runconatiner.sh -> write the command to run the container:
+◼ The container should run In background
+◼ The name of the container is acme
+◼ The container has the following ports exposed:
+12080:8080
+12990:9990
+12999:9999
+The container should use the image acme/jboss-eap
+Print logcontainer.sh > print the last 10 logs of the containers
+
+Q3:creating the image:
+Tag the image acme/jboss-eap with the tag jboss:7.2.0-snapshot
+Push the image to the acmeregistry:5000 
+Save the image
+
+Q4 launch a database container
+Go to /home/workspace/acme-mariadb/
+Open the rundatabase.sh file and write the command to run the mariadb container
+NOTE: USE THE –po wordpresspod to launch a container in pod
+The name of the container is : mariadb
+Is should use the following vairables:
+MARIADB_USER=candidate
+MARIADB_DATABASE=acme
+MARIADB_PASSWORD=mypass
+MARIADB_ROOT_PASSWORD=Redhat
+Attach /opt/data to /var/lib/mysql
+Expose the port 8080:80
+
+
+Q5 launch the wordpress container with the option –pod wordpresspod
+Open the runwordpress.sh file and write the command to launch the wordpress container.
+Name of container: wordpress
+Variables:
+WORDPRESS_DB_HOST: 127.0.0.1:3306
+WORDPRESS_DB_USER=candidate
+WORDPRESS_DB_PASSWORD=mypass
+WORDPRESS_DB_NAME=acme
+It should use the wordpress image
+
+Q6 create a project message-info, with displayname
+create the application using the template
+The template is given at /home/workspace/template.json
+Run the application using this application
+Give the following parameters:
+POSTGRESQL_USER=acme
+POSTGRESQL_PASSWORD=redhat
+POSTGRESQL_DATABASE=acmedb
+DATABASE_SERVICE_NAME=post
+Give the label to all resources:
+App=postgresql
+Db=infodb
+
+Q7 
+Launch the application :
+label:
+name:infodb
+Give the following env variables:
+DB_USER=acme
+DB_NAME=acmedb
+DB_PASSWORD=redhat
+DB_SERVICE_NAME=infodb
+
+
+8th Question:
+A) Given script → open script → write command for getting logs of container that we launched 
+in message-info project.
+B) Given script → open script →
+In Workspace ; They have given, some file named info.sh → we have to write script that we 
+have to copy info.sh to the container that we launched in message-db project 
+C) Given script → open script →
+We have to write a script to run the info.sh, that we copied earlier in previous step to 
+container that we launched in message-db project
+Not 100% sure
